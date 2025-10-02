@@ -21,8 +21,12 @@ import {
 } from "@/components/ui/select";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { client, urlFor } from "@/lib/sanity";
 import { Product, Category, Collection } from "@/types/sanity";
+import { 
+  getDummyProducts, 
+  getDummyCategories, 
+  getDummyCollections 
+} from "@/data/dummy-products";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -47,77 +51,20 @@ export default function Products() {
 
   const fetchData = async () => {
     try {
-      // Fetch products with related data
-      const productsQuery = `
-        *[_type == "product" && isAvailable == true] {
-          _id,
-          name,
-          slug,
-          description,
-          shortDescription,
-          images,
-          category->{
-            _id,
-            name,
-            slug
-          },
-          collection->{
-            _id,
-            name,
-            slug
-          },
-          materials[]->{
-            _id,
-            name,
-            properties
-          },
-          dimensions,
-          features,
-          craftingTechnique,
-          origin,
-          artisan,
-          featured,
-          createdAt
-        }
-      `;
-
-      // Fetch categories
-      const categoriesQuery = `
-        *[_type == "category"] {
-          _id,
-          name,
-          slug,
-          description,
-          image
-        }
-      `;
-
-      // Fetch collections
-      const collectionsQuery = `
-        *[_type == "collection"] {
-          _id,
-          name,
-          slug,
-          description,
-          image,
-          featured
-        }
-      `;
-
-      const [productsData, categoriesData, collectionsData] = await Promise.all(
-        [
-          client.fetch(productsQuery),
-          client.fetch(categoriesQuery),
-          client.fetch(collectionsQuery),
-        ]
-      );
+      // Use dummy data instead of Sanity
+      const productsData = getDummyProducts();
+      const categoriesData = getDummyCategories();
+      const collectionsData = getDummyCollections();
 
       setProducts(productsData);
       setCategories(categoriesData);
       setCollections(collectionsData);
     } catch (error) {
-      console.error("Error fetching data:", error);
-      // You could set some fallback data here if needed
+      console.error("Error loading data:", error);
+      // Fallback to empty arrays
+      setProducts([]);
+      setCategories([]);
+      setCollections([]);
     } finally {
       setLoading(false);
     }
@@ -280,18 +227,23 @@ export default function Products() {
                   <div className="aspect-square overflow-hidden rounded-t-lg bg-gray-100">
                     {product.images?.[0] ? (
                       <Image
-                        src={urlFor(product.images[0])
-                          .width(400)
-                          .height(400)
-                          .url()}
-                        alt={product.images[0].alt || product.name}
+                        src={`/assets/${product.slug.current}.jpg`}
+                        alt={product.name}
                         width={400}
                         height={400}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          // Fallback to placeholder if image not found
+                          const target = e.target as HTMLImageElement;
+                          target.src = "/assets/placeholder-product.jpg";
+                        }}
                       />
                     ) : (
-                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                        <span className="text-gray-400">No Image</span>
+                      <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="text-4xl mb-2">🥈</div>
+                          <span className="text-gray-500 text-sm">Silver Product</span>
+                        </div>
                       </div>
                     )}
                   </div>
