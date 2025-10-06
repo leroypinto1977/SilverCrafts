@@ -2,7 +2,12 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: "class",
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -14,8 +19,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ['var(--font-playfair-display)', 'Playfair Display', 'serif'],
-        sans: ['var(--font-lato)', 'Lato', 'sans-serif'],
+        sans: ["var(--font-inter)", "Inter", "sans-serif"],
+        heading: ["var(--font-poppins)", "Poppins", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -23,7 +28,7 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        
+
         navy: {
           DEFAULT: "hsl(var(--navy))",
           light: "hsl(var(--navy-light))",
@@ -46,7 +51,7 @@ export default {
           800: "hsl(var(--gray-800))",
           900: "hsl(var(--gray-900))",
         },
-        
+
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

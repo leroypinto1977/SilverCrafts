@@ -4,14 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "seed": "tsx scripts/seed.ts",
-    "db:seed": "tsx scripts/seed.ts",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
     "process-csv": "tsx scripts/process-csv-data.ts",
+    "process-csv-variants": "tsx scripts/process-csv-with-variants.ts",
+    "import-sanity": "tsx scripts/import-to-sanity-new.ts",
+    "import-sanity-variants": "tsx scripts/import-sanity-variants.ts",
     "clear-sanity": "tsx scripts/clear-sanity-data.ts",
-    "import-sanity": "tsx scripts/import-to-sanity.ts"
+    "reset-admin": "tsx scripts/reset-admin.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
@@ -52,9 +54,11 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "csv-parse": "^6.1.0",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^12.23.22",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.544.0",
     "next": "15.5.4",

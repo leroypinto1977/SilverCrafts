@@ -8,6 +8,7 @@ This guide will help you import your authentic CSV-based product catalog into Sa
 
 1. **Sanity Project**: You should already have a Sanity project set up
 2. **Environment Variables**: Your `.env.local` should have:
+
    ```
    NEXT_PUBLIC_SANITY_PROJECT_ID=your-project-id
    NEXT_PUBLIC_SANITY_DATASET=production
@@ -42,11 +43,13 @@ SANITY_WRITE_TOKEN=your-write-token-here
 The import script will process your CSV-based product catalog in this order:
 
 ### Phase 1: Foundation Data
+
 1. **Categories** (16 items): Bowls, Chombu, Lamps, Plates, etc.
 2. **Materials** (3 items): Pure Silver, Sterling Silver, Traditional Alloy
 3. **Collections** (8 items): Sacred Motifs, Hand Engraved, etc.
 
 ### Phase 2: Products
+
 4. **Products** (25+ items): Authentic silvercraft items with proper categorization
 
 ## 🚀 Run the Import
@@ -57,6 +60,7 @@ npm run import-sanity
 ```
 
 The script will:
+
 - ✅ Create categories first (to establish references)
 - ✅ Create materials and collections
 - ✅ Create products with proper category/material/collection references
@@ -66,6 +70,7 @@ The script will:
 ## 📊 What Gets Imported
 
 ### Categories (16):
+
 - Bowls, Boxes, Chombu, Cups & Drinkware
 - Glasses, Kamakshi Items, Kodam, Lamps & Lighting
 - Panchapathram & Ritual Items, Plates & Serving
@@ -73,6 +78,7 @@ The script will:
 - Coins & Bars, Other Items
 
 ### Products (25+):
+
 - Plain Silver Bowl (25g) → Bowls
 - Chombu Ashtalakshmi (250g) → Chombu
 - Kuthuvizhaku Plain (100g) → Lamps & Lighting
@@ -84,6 +90,7 @@ The script will:
 ## 🎨 After Import
 
 1. **Open Sanity Studio**:
+
    ```bash
    npx sanity dev
    ```
@@ -97,21 +104,27 @@ The script will:
 ## 🔧 Troubleshooting
 
 ### Missing Environment Variables
+
 ```
 ❌ Missing NEXT_PUBLIC_SANITY_PROJECT_ID environment variable
 ```
+
 **Solution**: Add the missing variable to `.env.local`
 
 ### Invalid Write Token
+
 ```
 ❌ Unauthorized
 ```
+
 **Solution**: Check your `SANITY_WRITE_TOKEN` is correct and has write permissions
 
 ### Reference Errors
+
 ```
 ❌ Reference not found
 ```
+
 **Solution**: The script imports in the correct order, so this shouldn't happen. Try re-running.
 
 ## 📈 Expected Output
@@ -164,6 +177,7 @@ The script will:
 ## 🎯 Next Steps
 
 After successful import:
+
 1. **Sanity Studio**: Open and verify all data
 2. **Images**: Upload and link product images
 3. **Website**: Your Next.js site will now display the imported products

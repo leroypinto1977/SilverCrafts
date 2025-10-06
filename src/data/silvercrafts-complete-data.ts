@@ -1,14 +1,14 @@
 /**
  * Complete Silvercrafts Sanity Import Data
- * 
+ *
  * This file combines all the categories, materials, collections, and products
  * derived from the actual CSV product catalog for easy import into Sanity Studio.
  */
 
-import silverCraftsCategories from './silvercrafts-categories';
-import silverCraftsMaterials from './silvercrafts-materials';
-import silverCraftsCollections from './silvercrafts-collections';
-import silverCraftsProducts from './silvercrafts-products';
+import silverCraftsCategories from "./silvercrafts-categories";
+import silverCraftsMaterials from "./silvercrafts-materials";
+import silverCraftsCollections from "./silvercrafts-collections";
+import silverCraftsProducts from "./silvercrafts-products";
 
 // ===================
 // IMPORT INSTRUCTIONS
@@ -118,11 +118,12 @@ export const silverCraftsCompleteData = {
     totalCategories: silverCraftsCategories.length,
     totalMaterials: silverCraftsMaterials.length,
     totalCollections: silverCraftsCollections.length,
-    description: 'Complete SilverCrafts product catalog with authentic South Indian silverware items',
-    version: '1.0.0',
+    description:
+      "Complete SilverCrafts product catalog with authentic South Indian silverware items",
+    version: "1.0.0",
     lastUpdated: new Date().toISOString(),
-  }
-}
+  },
+};
 
 export {
   silverCraftsCategories,
@@ -130,6 +131,6 @@ export {
   silverCraftsMaterials,
   silverCraftsCollections,
   silverCraftsImportInstructions,
-}
+};
 
 export default silverCraftsCompleteData;

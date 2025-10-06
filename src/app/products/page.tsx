@@ -21,20 +21,29 @@ import {
 } from "@/components/ui/select";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Product, Category, Collection } from "@/types/sanity";
-import { 
-  getDummyProducts, 
-  getDummyCategories, 
-  getDummyCollections 
-} from "@/data/dummy-products";
+import {
+  ProductListItem,
+  SanityCategory,
+  SanityCollection,
+} from "@/lib/sanity.types";
+import {
+  getProducts,
+  getCategories,
+  getCollections,
+  filterProducts,
+  sortProducts,
+} from "@/lib/sanity.data";
+import { urlFor } from "@/lib/sanity";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Products() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [collections, setCollections] = useState<Collection[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductListItem[]>([]);
+  const [categories, setCategories] = useState<SanityCategory[]>([]);
+  const [collections, setCollections] = useState<SanityCollection[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductListItem[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -51,10 +60,10 @@ export default function Products() {
 
   const fetchData = async () => {
     try {
-      // Use dummy data instead of Sanity
-      const productsData = getDummyProducts();
-      const categoriesData = getDummyCategories();
-      const collectionsData = getDummyCollections();
+      // Fetch data from Sanity
+      const productsData = await getProducts();
+      const categoriesData = await getCategories();
+      const collectionsData = await getCollections();
 
       setProducts(productsData);
       setCategories(categoriesData);
@@ -71,44 +80,20 @@ export default function Products() {
   };
 
   const filterAndSortProducts = () => {
-    let filtered = products.filter((product) => {
-      const matchesSearch =
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.shortDescription
-          ?.toLowerCase()
-          .includes(searchTerm.toLowerCase());
-
-      const matchesCategory =
-        selectedCategory === "all" ||
-        product.category?.slug.current === selectedCategory;
-      const matchesCollection =
-        selectedCollection === "all" ||
-        product.collection?.slug.current === selectedCollection;
-
-      return matchesSearch && matchesCategory && matchesCollection;
+    // Use the filterProducts function from sanity.data.ts
+    const filtered = filterProducts(products, {
+      search: searchTerm,
+      category: selectedCategory === "all" ? undefined : selectedCategory,
+      availability: "all",
     });
 
-    // Sort products
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case "name":
-          return a.name.localeCompare(b.name);
-        case "category":
-          return (a.category?.name || "").localeCompare(b.category?.name || "");
-        case "newest":
-          return (
-            new Date(b.createdAt || "").getTime() -
-            new Date(a.createdAt || "").getTime()
-          );
-        case "featured":
-          return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
-        default:
-          return 0;
-      }
-    });
+    // Sort products using the sortProducts function
+    const sorted = sortProducts(
+      filtered,
+      sortBy as "name" | "weight" | "variants"
+    );
 
-    setFilteredProducts(filtered);
+    setFilteredProducts(sorted);
   };
 
   if (loading) {
@@ -199,9 +184,8 @@ export default function Products() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="name">Name (A-Z)</SelectItem>
-              <SelectItem value="category">Category</SelectItem>
-              <SelectItem value="newest">Newest First</SelectItem>
-              <SelectItem value="featured">Featured First</SelectItem>
+              <SelectItem value="weight">Weight</SelectItem>
+              <SelectItem value="variants">Most Variants</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -227,7 +211,10 @@ export default function Products() {
                   <div className="aspect-square overflow-hidden rounded-t-lg bg-gray-100">
                     {product.images?.[0] ? (
                       <Image
-                        src={`/assets/${product.slug.current}.jpg`}
+                        src={urlFor(product.images[0])
+                          .width(400)
+                          .height(400)
+                          .url()}
                         alt={product.name}
                         width={400}
                         height={400}
@@ -242,7 +229,9 @@ export default function Products() {
                       <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                         <div className="text-center">
                           <div className="text-4xl mb-2">🥈</div>
-                          <span className="text-gray-500 text-sm">Silver Product</span>
+                          <span className="text-gray-500 text-sm">
+                            Silver Product
+                          </span>
                         </div>
                       </div>
                     )}
@@ -267,52 +256,28 @@ export default function Products() {
                   </CardTitle>
 
                   <CardDescription className="text-sm mb-4 line-clamp-3">
-                    {product.shortDescription || product.description}
+                    {product.shortDescription}
                   </CardDescription>
 
-                  {/* Product Details */}
+                  {/* Product Details - Variants */}
                   <div className="space-y-2 mb-4 text-xs text-gray-600">
-                    {product.craftingTechnique && (
-                      <p>
-                        <span className="font-medium">Technique:</span>{" "}
-                        {product.craftingTechnique}
-                      </p>
-                    )}
-                    {product.origin && (
-                      <p>
-                        <span className="font-medium">Origin:</span>{" "}
-                        {product.origin}
-                      </p>
-                    )}
-                    {product.artisan && (
-                      <p>
-                        <span className="font-medium">Artisan:</span>{" "}
-                        {product.artisan}
-                      </p>
-                    )}
+                    <p>
+                      <span className="font-medium">Variants:</span>{" "}
+                      {product.variantCount} available
+                    </p>
+                    <p>
+                      <span className="font-medium">Weight Range:</span>{" "}
+                      {product.minWeight}g - {product.maxWeight}g
+                    </p>
+                    <p>
+                      <span className="font-medium">Available:</span>{" "}
+                      {product.variants.some((v) => v.status === "available")
+                        ? "Yes"
+                        : "No"}
+                    </p>
                   </div>
 
-                  {/* Materials */}
-                  {product.materials && product.materials.length > 0 && (
-                    <div className="mb-4">
-                      <p className="text-xs font-medium text-gray-600 mb-1">
-                        Materials:
-                      </p>
-                      <div className="flex flex-wrap gap-1">
-                        {product.materials.map((material) => (
-                          <Badge
-                            key={material._id}
-                            variant="outline"
-                            className="text-xs"
-                          >
-                            {material.name}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  <Link href={`/products/${product.slug.current}`}>
+                  <Link href={`/products/${product.slug}`}>
                     <Button className="w-full group">
                       <Eye className="w-4 h-4 mr-2" />
                       View Details

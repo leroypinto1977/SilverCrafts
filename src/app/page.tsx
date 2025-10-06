@@ -1,31 +1,21 @@
-import Header from "@/components/Header";
-import HeroSection from "@/components/HeroSection";
-import FeaturedProducts from "@/components/FeaturedProducts";
-import StandardsBanner from "@/components/StandardsBanner";
-import ProductCategories from "@/components/ProductCategories";
-import BestDiamonds from "@/components/BestDiamonds";
-import AntwerpCraftsmanship from "@/components/AntwerpCraftsmanship";
-import PremiumTestimonials from "@/components/PremiumTestimonials";
-import BespokeServices from "@/components/BespokeServices";
-import Testimonial from "@/components/Testimonial";
-import FinalCTA from "@/components/FinalCTA";
+import NewHeader from "@/components/NewHeader";
+import NewHeroSection from "@/components/NewHeroSection";
+import NewProductsSection from "@/components/NewProductsSection";
+import WhyUsSection from "@/components/WhyUsSection";
+import { OurStorySection } from "@/components/OurStorySection";
+import PlaceOrderSection from "@/components/PlaceOrderSection";
 import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <NewHeader />
       <main>
-        <HeroSection />
-        <FeaturedProducts />
-        <StandardsBanner />
-        <ProductCategories />
-        <BestDiamonds />
-        <AntwerpCraftsmanship />
-        <PremiumTestimonials />
-        <BespokeServices />
-        <Testimonial />
-        <FinalCTA />
+        <NewHeroSection />
+        <NewProductsSection />
+        <WhyUsSection />
+        <OurStorySection />
+        <PlaceOrderSection />
       </main>
       <Footer />
     </div>
