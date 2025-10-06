@@ -21,12 +21,15 @@ import {
   ProductFilters,
 } from "./sanity.types";
 
-// Fetch all products
+// Fetch all products with caching
 export async function getProducts(): Promise<ProductListItem[]> {
   try {
-    return await client.fetch(PRODUCTS_QUERY);
+    return await client.fetch(PRODUCTS_QUERY, {}, {
+      next: { revalidate: 3600 }, // Cache for 1 hour
+    });
   } catch (error) {
     console.error("Error fetching products:", error);
+    // Return fallback data if Sanity is unavailable
     return [];
   }
 }
