@@ -23,6 +23,6 @@ export const client = createClient({
 const builder = imageUrlBuilder(client);
 
 // Helper function for image URLs
-export function urlFor(source: unknown) {
+export function urlFor(source: any) {
   return builder.image(source);
 }
