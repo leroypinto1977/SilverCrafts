@@ -176,7 +176,7 @@ export default function InventoryManagement() {
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="border-gray-200">
+        <Card className="border-gray-200 py-6">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-600">
               Total Items
@@ -188,7 +188,7 @@ export default function InventoryManagement() {
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200">
+        <Card className="border-gray-200 py-6">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-600">
               Low Stock Alerts
@@ -200,7 +200,7 @@ export default function InventoryManagement() {
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200">
+        <Card className="border-gray-200 py-6">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-600">
               Total Value
@@ -214,7 +214,7 @@ export default function InventoryManagement() {
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200">
+        <Card className="border-gray-200 py-6">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-600">
               Categories
@@ -230,7 +230,7 @@ export default function InventoryManagement() {
       </div>
 
       {/* Filters */}
-      <Card className="border-gray-200">
+      <Card className="border-gray-200 py-6">
         <CardHeader>
           <CardTitle className="text-black">Inventory Management</CardTitle>
           <p className="text-gray-600">

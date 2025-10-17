@@ -7,8 +7,8 @@ import { z } from "zod";
 const prisma = new PrismaClient();
 
 const changePasswordSchema = z.object({
-  currentPassword: z.string().min(1, "Current password is required"),
-  newPassword: z.string().min(1, "New password is required"),
+  currentPassword: z.string().min(1, "Current password is required").optional(),
+  newPassword: z.string().min(6, "New password must be at least 6 characters"),
 });
 
 // POST /api/auth/change-password - Change user password
@@ -37,17 +37,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Verify current password
-    const isCurrentPasswordValid = await bcrypt.compare(
-      currentPassword,
-      user.password
-    );
+    // If not a temporary password, verify current password is provided and correct
+    if (!user.isTemporary) {
+      if (!currentPassword) {
+        return NextResponse.json(
+          { error: "Current password is required" },
+          { status: 400 }
+        );
+      }
 
-    if (!isCurrentPasswordValid) {
-      return NextResponse.json(
-        { error: "Current password is incorrect" },
-        { status: 400 }
+      const isCurrentPasswordValid = await bcrypt.compare(
+        currentPassword,
+        user.password
       );
+
+      if (!isCurrentPasswordValid) {
+        return NextResponse.json(
+          { error: "Current password is incorrect" },
+          { status: 400 }
+        );
+      }
     }
 
     // Hash new password

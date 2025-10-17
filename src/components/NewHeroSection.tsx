@@ -45,14 +45,14 @@ const NewHeroSection = () => {
       {/* 60% Left Side - SilverCrafts Name */}
       <div className="w-3/5 flex items-center justify-center px-12 lg:px-20 relative z-10 pt-16">
         <div className="text-center lg:text-left max-w-2xl">
-          <div className="inline-block bg-gold px-4 py-2 rounded-full">
+          {/* <div className="inline-block bg-gold px-4 py-2 rounded-full">
             <AnimatedShinyText
               className="text-white font-bold text-sm uppercase tracking-wide font-heading"
               shimmerWidth={150}
             >
               Since 1985
             </AnimatedShinyText>
-          </div>
+          </div> */}
           <h1 className="font-heading text-6xl lg:text-8xl xl:text-9xl font-bold text-navy mb-8 leading-tight">
             SilverCrafts
           </h1>
